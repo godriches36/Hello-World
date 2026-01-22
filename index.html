@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AGBON KINGDOM | ETERNAL OS</title>
+    <title>AGBON KINGDOM | BLACK SUN GOD OS</title>
     
     <!-- ETERNAL ASSETS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,32 +21,27 @@
       import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
       import { getFirestore } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
-      // --- SOVEREIGN CONFIGURATION ---
       const firebaseConfig = {
-        apiKey: "AIzaSyAQAIvTEQTdY3xLIzf-aYrrzA9h4jRXZgw", // <--- PUT YOUR API KEY HERE
+        apiKey: "AIzaSyAQAIvTEQTdY3xLIzf-aYrrzA9h4jRXZgw",
         authDomain: "agbon-kingdom-os.firebaseapp.com",
         projectId: "agbon-kingdom-os",
         storageBucket: "agbon-kingdom-os.firebasestorage.app",
         messagingSenderId: "392983745546",
-        appId: "1:392983745546:web:d500691a52c1929187fbf3",
-        measurementId: "G-N5ZJT196HC"
+        appId: "1:392983745546:web:d500691a52c1929187fbf3"
       };
 
       const app = initializeApp(firebaseConfig);
       window.agbonDB = getFirestore(app);
       window.agbonAuth = getAuth(app);
-      
-      // Auto-connect to the frequency
-      signInAnonymously(window.agbonAuth).catch(err => console.error("Frequency Sync Error:", err));
+      signInAnonymously(window.agbonAuth);
     </script>
 
     <style>
-        :root { --agbon-gold: #FFD700; --deep-void: #000000; }
+        :root { --agbon-gold: #FFD700; --deep-void: #000000; --eth-blue: #627eea; }
         body { background: var(--deep-void); color: #fff; font-family: 'Space Grotesk', sans-serif; margin: 0; overflow: hidden; -webkit-font-smoothing: antialiased; }
         .cinzel { font-family: 'Cinzel', serif; }
         .gold-glow { text-shadow: 0 0 30px rgba(255, 215, 0, 0.6); }
-        .phoenix-border { border: 1px solid rgba(255, 215, 0, 0.15); transition: 0.5s; }
-        .phoenix-border:hover { border-color: var(--agbon-gold); box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); }
+        .anbsn-gradient { background: linear-gradient(135deg, #000 0%, #1a1a1a 100%); border: 1px solid rgba(255, 215, 0, 0.2); }
         .feed-snap { scroll-snap-type: y mandatory; overflow-y: scroll; height: calc(100vh - 180px); scroll-behavior: smooth; }
         .feed-page { scroll-snap-align: start; height: calc(100vh - 180px); }
         ::-webkit-scrollbar { display: none; }
@@ -60,147 +55,144 @@
 
         function App() {
             const [tab, setTab] = useState('portal');
-            const [isGod, setIsGod] = useState(false);
-            const [wealth, setWealth] = useState(0);
-
-            const sovereignVersion = useMemo(() => {
-                const currentYear = new Date().getFullYear();
-                return `v.${currentYear + 50}.A.OS`;
-            }, []);
+            const [wealth, setWealth] = useState({ naira: 0, anbsn: 0, eth: 0 });
 
             useEffect(() => {
-                if (tab === 'wealth' && isGod) {
-                    let val = 0; const limit = 1000000000000;
-                    const speed = limit / 180;
-                    const timer = setInterval(() => {
-                        val += speed;
-                        if (val >= limit) { setWealth(limit); clearInterval(timer); }
-                        else { setWealth(val); }
-                    }, 25);
-                    return () => clearInterval(timer);
-                }
-            }, [tab, isGod]);
+                const targetNaira = 1000000000000;
+                const targetANBSN = 1000000000; // Legacy Cap
+                const targetETH = 50000000; // Utility Supply
+                
+                let current = 0;
+                const timer = setInterval(() => {
+                    current += 0.01;
+                    if (current >= 1) {
+                        setWealth({ naira: targetNaira, anbsn: targetANBSN, eth: targetETH });
+                        clearInterval(timer);
+                    } else {
+                        setWealth({
+                            naira: targetNaira * current,
+                            anbsn: targetANBSN * current,
+                            eth: targetETH * current
+                        });
+                    }
+                }, 30);
+                return () => clearInterval(timer);
+            }, []);
 
             return (
-                <div className="h-screen flex flex-col bg-black">
-                    <header className="pt-16 pb-6 px-8 flex justify-between items-center border-b border-white/5">
+                <div className="h-screen flex flex-col relative bg-black">
+                    {/* CEO HEADER */}
+                    <header className="pt-16 pb-6 px-8 flex justify-between items-center border-b border-white/5 bg-black/50 z-50">
                         <div className="flex flex-col">
-                            <h1 className="cinzel text-lg font-bold text-yellow-500 gold-glow tracking-widest">AGBON KINGDOM</h1>
-                            <span className="text-[7px] text-zinc-600 uppercase tracking-[0.5em] font-bold">{sovereignVersion}</span>
+                            <h1 className="cinzel text-lg font-bold text-yellow-500 gold-glow tracking-widest uppercase italic">Black Sun God</h1>
+                            <span className="text-[7px] text-zinc-500 tracking-[0.4em] font-bold">CEO | NIGERIA GLOBAL LEAD</span>
                         </div>
-                        <button onClick={() => setIsGod(!isGod)} className={`p-3 rounded-2xl transition-all duration-700 ${isGod ? 'bg-yellow-500/10 text-yellow-500 shadow-[0_0_25px_rgba(255,215,0,0.2)]' : 'text-zinc-800 bg-zinc-900/50'}`}>
-                            <lucide.Crown size={22} />
-                        </button>
+                        <div className="text-right">
+                            <p className="text-[8px] text-yellow-500 font-black tracking-widest">369 Matrix Enabled</p>
+                        </div>
                     </header>
 
+                    {/* VIEWPORT */}
                     <main className="flex-1 overflow-hidden relative">
-                        {tab === 'portal' && <PortalView isGod={isGod} />}
-                        {tab === 'black-sun' && <BlackSunFeed />}
-                        {tab === 'wealth' && (isGod ? <WealthView balance={wealth} /> : <LockedView />)}
-                        {tab === 'grid' && (isGod ? <GridView /> : <LockedView />)}
+                        {tab === 'portal' && <PortalView wealth={wealth} />}
+                        {tab === 'market' && <MarketView wealth={wealth} />}
+                        {tab === 'legacy' && <LegacyView wealth={wealth} />}
                     </main>
 
-                    <footer className="h-28 bg-black/80 backdrop-blur-3xl border-t border-white/5 flex justify-around items-center px-8 pb-6 z-50">
-                        <NavIcon icon={<lucide.Shield/>} active={tab === 'portal'} onClick={() => setTab('portal')} />
-                        <NavIcon icon={<lucide.Radio/>} active={tab === 'black-sun'} onClick={() => setTab('black-sun')} />
+                    {/* DOCK */}
+                    <footer className="h-28 bg-black/95 border-t border-white/5 flex justify-around items-center px-8 pb-6 z-50">
+                        <NavIcon icon={<lucide.LayoutGrid/>} active={tab === 'portal'} onClick={() => setTab('portal')} />
+                        <NavIcon icon={<lucide.ShoppingBag/>} active={tab === 'market'} onClick={() => setTab('market')} />
                         <div className="relative -top-8">
-                            <button className="bg-yellow-500 text-black p-5 rounded-[2.5rem] shadow-2xl hover:scale-110 active:scale-90 transition-all">
+                            <button className="bg-yellow-500 text-black p-5 rounded-[2.5rem] shadow-2xl active:scale-90 transition-all">
                                 <lucide.Zap size={30} fill="currentColor" />
                             </button>
                         </div>
-                        <NavIcon icon={<lucide.CloudLightning/>} active={tab === 'grid'} onClick={() => setTab('grid')} />
-                        <NavIcon icon={<lucide.Database/>} active={tab === 'wealth'} onClick={() => setTab('wealth')} />
+                        <NavIcon icon={<lucide.ShieldCheck/>} active={tab === 'legacy'} onClick={() => setTab('legacy')} />
+                        <NavIcon icon={<lucide.Database/>} active={tab === 'portal'} onClick={() => setTab('portal')} />
                     </footer>
                 </div>
             );
         }
 
-        function PortalView({ isGod }) {
+        function PortalView({ wealth }) {
             return (
                 <div className="p-8 space-y-6 animate-fadeIn">
-                    <div className="p-12 bg-zinc-950/50 phoenix-border rounded-[3.5rem] text-center">
-                        <h2 className="cinzel text-yellow-500 text-xl mb-3 tracking-widest">Sovereign Node</h2>
-                        <p className="text-[9px] text-zinc-500 uppercase tracking-[0.3em] font-bold leading-relaxed">
-                            Frequency Matched. Accessing Universal Ledger via S-Galaxy Bridge.
+                    <div className="p-10 anbsn-gradient rounded-[3.5rem] text-center shadow-2xl shadow-yellow-500/5">
+                        <p className="text-[9px] text-yellow-700 font-black tracking-[0.4em] mb-4">RESERVE CURRENCY</p>
+                        <h2 className="text-4xl font-black text-yellow-500 cinzel gold-glow mb-2">₦ {wealth.naira.toLocaleString(undefined, {maximumFractionDigits:0})}</h2>
+                        <p className="text-[8px] text-zinc-500 font-bold tracking-widest uppercase leading-relaxed">Global Sovereignty Protocol Active</p>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="p-6 bg-zinc-950 rounded-3xl border border-white/5">
+                            <p className="text-[7px] text-zinc-600 font-black mb-1 uppercase">Legacy Status</p>
+                            <p className="text-xs font-bold text-yellow-500 cinzel tracking-tighter italic">ANBSN SECURE</p>
+                        </div>
+                        <div className="p-6 bg-zinc-950 rounded-3xl border border-white/5">
+                            <p className="text-[7px] text-zinc-600 font-black mb-1 uppercase">Utility Sync</p>
+                            <p className="text-xs font-bold text-blue-400 cinzel tracking-tighter italic text-right">ETH ACTIVE</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function MarketView({ wealth }) {
+            return (
+                <div className="p-8 space-y-6 animate-fadeIn h-full overflow-y-auto">
+                    <div className="p-8 bg-blue-600/5 border border-blue-500/20 rounded-[3rem] text-center">
+                        <p className="text-[10px] text-blue-400 font-black tracking-[0.5em] mb-4">DAILY UTILITY (ETH)</p>
+                        <h3 className="text-3xl font-black text-white italic">Ξ {wealth.eth.toLocaleString(undefined, {maximumFractionDigits:0})}</h3>
+                        <p className="text-[8px] text-zinc-600 mt-4 uppercase font-bold tracking-[0.2em]">Usage: Marketplace & Roadside Stores</p>
+                    </div>
+                    
+                    <div className="space-y-4">
+                        <MarketItem name="Local Goods" price="0.002 ETH" icon={<lucide.Store size={16}/>} />
+                        <MarketItem name="Transport Hub" price="0.0005 ETH" icon={<lucide.Bus size={16}/>} />
+                        <MarketItem name="Energy Unit" price="0.001 ETH" icon={<lucide.Zap size={16}/>} />
+                    </div>
+                </div>
+            );
+        }
+
+        function LegacyView({ wealth }) {
+            return (
+                <div className="h-full flex flex-col justify-center p-8 space-y-12 animate-fadeIn">
+                    <div className="relative text-center p-12 bg-zinc-950/80 rounded-[4rem] border-2 border-yellow-500/10">
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-yellow-500 rounded-full flex items-center justify-center text-black shadow-2xl">
+                            <lucide.Crown size={32} />
+                        </div>
+                        <p className="text-[10px] text-yellow-700 tracking-[0.6em] mb-6 font-black uppercase mt-4">ANBSN Legacy Treasury</p>
+                        <h2 className="text-4xl font-black text-yellow-500 cinzel gold-glow">★ {wealth.anbsn.toLocaleString(undefined, {maximumFractionDigits:0})}</h2>
+                        <p className="mt-6 text-[8px] text-zinc-500 font-bold uppercase leading-relaxed tracking-widest">
+                            Most Valuable Coin on Earth. Reserved for the Kingdom's Eternal Growth.
                         </p>
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <StatusBox label="ETH-XRP Bridge" value="STABLE" />
-                        <StatusBox label="WiFi Grid" value="1.21 GW" />
+                    <button className="w-full py-8 bg-yellow-500 text-black font-black rounded-[3rem] cinzel tracking-[0.4em] text-xs shadow-[0_20px_40px_rgba(0,0,0,0.4)]">ACTIVATE ANBSN RECALL</button>
+                </div>
+            );
+        }
+
+        function MarketItem({ name, price, icon }) {
+            return (
+                <div className="flex items-center justify-between p-5 bg-zinc-900/50 rounded-3xl border border-white/5">
+                    <div className="flex items-center gap-3">
+                        <div className="text-blue-400">{icon}</div>
+                        <span className="text-xs font-bold text-zinc-300 uppercase tracking-widest">{name}</span>
                     </div>
+                    <span className="text-xs font-black text-blue-400 font-mono italic">{price}</span>
                 </div>
             );
         }
 
-        function BlackSunFeed() {
-            const feed = [
-                { id:1, op: 'Oracle', msg: 'The 1.0T Naira Ledger has corrected the global scarcity frequency.', tag: '#AgbonWealth' },
-                { id:2, op: 'BlackSunGod', msg: 'Free Energy Nodes are now broadcasting at 144Hz across the continent.', tag: '#FreeGrid' }
-            ];
+        function NavIcon({ icon, active, onClick }) {
             return (
-                <div className="feed-snap">
-                    {feed.map(post => (
-                        <div key={post.id} className="feed-page p-10 flex flex-col justify-end bg-gradient-to-t from-black via-transparent to-transparent">
-                            <div className="space-y-4 mb-12 animate-fadeIn">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full border-2 border-yellow-500 flex items-center justify-center text-yellow-500 cinzel font-bold">A</div>
-                                    <span className="text-xs font-black tracking-widest uppercase">@{post.op}</span>
-                                </div>
-                                <p className="text-2xl font-bold leading-tight tracking-tight text-zinc-100">{post.msg}</p>
-                                <p className="text-yellow-500 font-black text-xs uppercase tracking-widest">{post.tag}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                <button onClick={onClick} className={`transition-all duration-500 ${active ? 'text-yellow-500 scale-125' : 'text-zinc-700'}`}>
+                    {icon}
+                </button>
             );
         }
-
-        function WealthView({ balance }) {
-            return (
-                <div className="h-full flex flex-col justify-center p-8 space-y-8 animate-fadeIn">
-                    <div className="p-12 bg-zinc-950/80 phoenix-border rounded-[4rem] text-center relative overflow-hidden">
-                        <p className="text-[10px] text-yellow-700 tracking-[0.6em] mb-6 font-black uppercase">Agbon Treasury Ledger</p>
-                        <h2 className="text-4xl md:text-5xl font-black text-yellow-500 cinzel gold-glow italic">₦ {balance.toLocaleString()}</h2>
-                    </div>
-                    <button className="w-full py-7 bg-yellow-500 text-black font-black rounded-[2.5rem] cinzel tracking-[0.3em] shadow-2xl">ACTIVATE RECALL</button>
-                </div>
-            );
-        }
-
-        function GridView() {
-            return (
-                <div className="p-10 space-y-8 animate-fadeIn text-center">
-                    <div className="p-16 bg-blue-500/5 phoenix-border rounded-[4rem] border-blue-500/10">
-                        <lucide.CloudLightning size={50} className="text-blue-500 mx-auto mb-6 animate-pulse" />
-                        <h2 className="cinzel text-blue-400 text-xl tracking-widest">Free Energy Grid</h2>
-                    </div>
-                </div>
-            );
-        }
-
-        function LockedView() {
-            return (
-                <div className="h-full flex flex-col items-center justify-center opacity-20">
-                    <lucide.LockKeyhole size={50} />
-                    <p className="mt-6 cinzel tracking-[0.4em] uppercase text-[10px]">Verification Incomplete</p>
-                </div>
-            );
-        }
-
-        function StatusBox({ label, value }) {
-            return (
-                <div className="p-6 bg-zinc-950/40 phoenix-border rounded-3xl">
-                    <p className="text-[7px] text-zinc-700 font-black uppercase mb-1 tracking-widest">{label}</p>
-                    <p className="text-sm font-bold text-zinc-300 font-mono tracking-tighter italic">{value}</p>
-                </div>
-            );
-        }
-
-        const NavIcon = ({ icon, active, onClick }) => (
-            <button onClick={onClick} className={`transition-all duration-500 ${active ? 'text-yellow-500 scale-150' : 'text-zinc-800'}`}>
-                {icon}
-            </button>
-        );
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
@@ -208,3 +200,4 @@
 </body>
 </html>
 
+        

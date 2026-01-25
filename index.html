@@ -9,20 +9,20 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
 
-    <!-- REACT 19 STABLE -->
+    <!-- REACT 19 -->
     <script src="https://unpkg.com/react@19/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@19/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    <!-- FIREBASE DIVINE CONNECTION -->
+    <!-- FIREBASE CONNECTION -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-      import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
       import { getFirestore } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
       const firebaseConfig = {
-        apiKey: "AIzaSyAQAIvTEQTdY3xLIzf-aYrrzA9h4jRXZgw",
+        apiKey: "AIzaSyAQAivTEQTdY3xLIzf-a...", // PASTE FULL KEY HERE
         authDomain: "agbon-kingdom-os.firebaseapp.com",
         projectId: "agbon-kingdom-os",
         storageBucket: "agbon-kingdom-os.firebasestorage.app",
@@ -32,18 +32,15 @@
 
       const app = initializeApp(firebaseConfig);
       window.agbonDB = getFirestore(app);
-      window.agbonAuth = getAuth(app);
-      signInAnonymously(window.agbonAuth);
     </script>
 
     <style>
-        :root { --agbon-gold: #FFD700; --deep-void: #000000; --eth-blue: #627eea; }
-        body { background: var(--deep-void); color: #fff; font-family: 'Space Grotesk', sans-serif; margin: 0; overflow: hidden; -webkit-font-smoothing: antialiased; }
+        :root { --agbon-gold: #FFD700; --deep-void: #000000; }
+        body { background: var(--deep-void); color: #fff; font-family: 'Space Grotesk', sans-serif; margin: 0; overflow: hidden; }
         .cinzel { font-family: 'Cinzel', serif; }
         .gold-glow { text-shadow: 0 0 30px rgba(255, 215, 0, 0.6); }
-        .anbsn-gradient { background: linear-gradient(135deg, #000 0%, #1a1a1a 100%); border: 1px solid rgba(255, 215, 0, 0.2); }
-        .feed-snap { scroll-snap-type: y mandatory; overflow-y: scroll; height: calc(100vh - 180px); scroll-behavior: smooth; }
-        .feed-page { scroll-snap-align: start; height: calc(100vh - 180px); }
+        .btn-divine { background: linear-gradient(135deg, #FFD700 0%, #B8860B 100%); color: #000; font-weight: 900; transition: 0.3s; }
+        .btn-divine:hover { transform: scale(1.02); box-shadow: 0 0 40px rgba(255, 215, 0, 0.4); }
         ::-webkit-scrollbar { display: none; }
     </style>
 </head>
@@ -51,146 +48,111 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useMemo } = React;
+        const { useState, useEffect } = React;
 
         function App() {
             const [tab, setTab] = useState('portal');
-            const [wealth, setWealth] = useState({ naira: 0, anbsn: 0, eth: 0 });
+            const [account, setAccount] = useState(null);
+            const [status, setStatus] = useState("Awaiting Divine Sync...");
 
-            useEffect(() => {
-                const targetNaira = 1000000000000;
-                const targetANBSN = 1000000000; // Legacy Cap
-                const targetETH = 50000000; // Utility Supply
-                
-                let current = 0;
-                const timer = setInterval(() => {
-                    current += 0.01;
-                    if (current >= 1) {
-                        setWealth({ naira: targetNaira, anbsn: targetANBSN, eth: targetETH });
-                        clearInterval(timer);
-                    } else {
-                        setWealth({
-                            naira: targetNaira * current,
-                            anbsn: targetANBSN * current,
-                            eth: targetETH * current
-                        });
+            const connectWallet = async () => {
+                if (window.ethereum) {
+                    try {
+                        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                        setAccount(accounts[0]);
+                        setStatus("Sovereign Wallet Connected.");
+                    } catch (err) {
+                        setStatus("Sync Failed. Try Again.");
                     }
-                }, 30);
-                return () => clearInterval(timer);
-            }, []);
+                } else {
+                    setStatus("MetaMask Required for Rewards.");
+                }
+            };
+
+            const triggerRecall = async () => {
+                if (!account) {
+                    setStatus("Connect Wallet First.");
+                    return;
+                }
+                setStatus("Initiating ANBSN Reward Recall...");
+                // This is where the transaction frequency is set
+                try {
+                    // Placeholder for future transaction logic
+                    setTimeout(() => setStatus("Recall Signal Broadcasted to ETH Network."), 2000);
+                } catch (e) {
+                    setStatus("Frequency Disturbance. Retry.");
+                }
+            };
 
             return (
-                <div className="h-screen flex flex-col relative bg-black">
-                    {/* CEO HEADER */}
-                    <header className="pt-16 pb-6 px-8 flex justify-between items-center border-b border-white/5 bg-black/50 z-50">
-                        <div className="flex flex-col">
+                <div className="h-screen flex flex-col bg-black">
+                    <header className="pt-12 pb-4 px-8 flex justify-between items-center border-b border-white/5">
+                        <div>
                             <h1 className="cinzel text-lg font-bold text-yellow-500 gold-glow tracking-widest uppercase italic">Black Sun God</h1>
-                            <span className="text-[7px] text-zinc-500 tracking-[0.4em] font-bold">CEO | NIGERIA GLOBAL LEAD</span>
+                            <p className="text-[7px] text-zinc-500 uppercase font-black tracking-[0.3em]">CEO | Agbon Kingdom</p>
                         </div>
                         <div className="text-right">
-                            <p className="text-[8px] text-yellow-500 font-black tracking-widest">369 Matrix Enabled</p>
+                            <div className={`text-[8px] font-black uppercase px-2 py-1 rounded border ${account ? 'border-green-500 text-green-500' : 'border-red-500 text-red-500'}`}>
+                                {account ? 'Online' : 'Offline'}
+                            </div>
                         </div>
                     </header>
 
-                    {/* VIEWPORT */}
-                    <main className="flex-1 overflow-hidden relative">
-                        {tab === 'portal' && <PortalView wealth={wealth} />}
-                        {tab === 'market' && <MarketView wealth={wealth} />}
-                        {tab === 'legacy' && <LegacyView wealth={wealth} />}
+                    <main className="flex-1 overflow-y-auto p-6 space-y-6 pb-32">
+                        {tab === 'portal' && (
+                            <div className="space-y-6 animate-fadeIn">
+                                <div className="p-8 bg-zinc-950 rounded-[3rem] border border-yellow-500/10 text-center">
+                                    <img src="https://i.ibb.co/LzNfXv0/ANBSN-COIN.png" alt="ANBSN" className="w-32 h-32 mx-auto mb-4 drop-shadow-2xl" 
+                                         onError={(e) => e.target.src = "https://via.placeholder.com/150?text=ANBSN"} />
+                                    <h2 className="cinzel text-yellow-500 text-xl mb-2">ANBSN Legacy</h2>
+                                    <p className="text-[10px] text-zinc-500 uppercase tracking-widest">Reserve Naira: 1.0T</p>
+                                </div>
+
+                                <div className="p-6 bg-zinc-900/50 rounded-3xl border border-white/5">
+                                    <p className="text-[10px] text-zinc-400 mb-2 uppercase font-black">System Status</p>
+                                    <p className="text-sm font-bold text-yellow-500/80 italic">{status}</p>
+                                </div>
+
+                                {account ? (
+                                    <div className="space-y-4">
+                                        <div className="p-4 bg-zinc-950 rounded-2xl border border-green-500/20">
+                                            <p className="text-[8px] text-zinc-600 uppercase mb-1">Receiver Address</p>
+                                            <p className="text-[10px] font-mono text-green-500 truncate">{account}</p>
+                                        </div>
+                                        <button onClick={triggerRecall} className="w-full py-6 rounded-[2.5rem] btn-divine cinzel tracking-[0.3em] text-xs">ACTIVATE RECALL</button>
+                                    </div>
+                                ) : (
+                                    <button onClick={connectWallet} className="w-full py-6 bg-white text-black font-black rounded-[2.5rem] cinzel tracking-[0.3em] text-xs">CONNECT METAMASK</button>
+                                )}
+                            </div>
+                        )}
+
+                        {tab === 'news' && (
+                            <div className="space-y-4 animate-fadeIn">
+                                <h2 className="cinzel text-yellow-500 text-center mb-6">Global Frequency</h2>
+                                <NewsItem title="Naira Ledger Sync" body="The 1.0T ANBSN anchor is now pulling global liquidity." time="2m ago" />
+                                <NewsItem title="ETH Marketplace" body="Lagos Roadside vendors adopting ETH for daily utility." time="15m ago" />
+                            </div>
+                        )}
                     </main>
 
-                    {/* DOCK */}
-                    <footer className="h-28 bg-black/95 border-t border-white/5 flex justify-around items-center px-8 pb-6 z-50">
-                        <NavIcon icon={<lucide.LayoutGrid/>} active={tab === 'portal'} onClick={() => setTab('portal')} />
-                        <NavIcon icon={<lucide.ShoppingBag/>} active={tab === 'market'} onClick={() => setTab('market')} />
-                        <div className="relative -top-8">
-                            <button className="bg-yellow-500 text-black p-5 rounded-[2.5rem] shadow-2xl active:scale-90 transition-all">
-                                <lucide.Zap size={30} fill="currentColor" />
-                            </button>
-                        </div>
-                        <NavIcon icon={<lucide.ShieldCheck/>} active={tab === 'legacy'} onClick={() => setTab('legacy')} />
-                        <NavIcon icon={<lucide.Database/>} active={tab === 'portal'} onClick={() => setTab('portal')} />
+                    <footer className="h-24 bg-black/90 border-t border-white/5 flex justify-around items-center px-10 pb-4 fixed bottom-0 w-full">
+                        <button onClick={() => setTab('portal')} className={`transition-all ${tab === 'portal' ? 'text-yellow-500 scale-125' : 'text-zinc-700'}`}><lucide.Shield size={24}/></button>
+                        <button onClick={() => setTab('news')} className={`transition-all ${tab === 'news' ? 'text-yellow-500 scale-125' : 'text-zinc-700'}`}><lucide.Radio size={24}/></button>
                     </footer>
                 </div>
             );
         }
 
-        function PortalView({ wealth }) {
+        function NewsItem({ title, body, time }) {
             return (
-                <div className="p-8 space-y-6 animate-fadeIn">
-                    <div className="p-10 anbsn-gradient rounded-[3.5rem] text-center shadow-2xl shadow-yellow-500/5">
-                        <p className="text-[9px] text-yellow-700 font-black tracking-[0.4em] mb-4">RESERVE CURRENCY</p>
-                        <h2 className="text-4xl font-black text-yellow-500 cinzel gold-glow mb-2">₦ {wealth.naira.toLocaleString(undefined, {maximumFractionDigits:0})}</h2>
-                        <p className="text-[8px] text-zinc-500 font-bold tracking-widest uppercase leading-relaxed">Global Sovereignty Protocol Active</p>
+                <div className="p-6 bg-zinc-950 rounded-3xl border border-white/5">
+                    <div className="flex justify-between items-center mb-2">
+                        <h3 className="text-yellow-500 text-[10px] font-black uppercase tracking-widest">{title}</h3>
+                        <span className="text-[8px] text-zinc-700">{time}</span>
                     </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="p-6 bg-zinc-950 rounded-3xl border border-white/5">
-                            <p className="text-[7px] text-zinc-600 font-black mb-1 uppercase">Legacy Status</p>
-                            <p className="text-xs font-bold text-yellow-500 cinzel tracking-tighter italic">ANBSN SECURE</p>
-                        </div>
-                        <div className="p-6 bg-zinc-950 rounded-3xl border border-white/5">
-                            <p className="text-[7px] text-zinc-600 font-black mb-1 uppercase">Utility Sync</p>
-                            <p className="text-xs font-bold text-blue-400 cinzel tracking-tighter italic text-right">ETH ACTIVE</p>
-                        </div>
-                    </div>
+                    <p className="text-sm text-zinc-300 font-bold leading-snug tracking-tight">{body}</p>
                 </div>
-            );
-        }
-
-        function MarketView({ wealth }) {
-            return (
-                <div className="p-8 space-y-6 animate-fadeIn h-full overflow-y-auto">
-                    <div className="p-8 bg-blue-600/5 border border-blue-500/20 rounded-[3rem] text-center">
-                        <p className="text-[10px] text-blue-400 font-black tracking-[0.5em] mb-4">DAILY UTILITY (ETH)</p>
-                        <h3 className="text-3xl font-black text-white italic">Ξ {wealth.eth.toLocaleString(undefined, {maximumFractionDigits:0})}</h3>
-                        <p className="text-[8px] text-zinc-600 mt-4 uppercase font-bold tracking-[0.2em]">Usage: Marketplace & Roadside Stores</p>
-                    </div>
-                    
-                    <div className="space-y-4">
-                        <MarketItem name="Local Goods" price="0.002 ETH" icon={<lucide.Store size={16}/>} />
-                        <MarketItem name="Transport Hub" price="0.0005 ETH" icon={<lucide.Bus size={16}/>} />
-                        <MarketItem name="Energy Unit" price="0.001 ETH" icon={<lucide.Zap size={16}/>} />
-                    </div>
-                </div>
-            );
-        }
-
-        function LegacyView({ wealth }) {
-            return (
-                <div className="h-full flex flex-col justify-center p-8 space-y-12 animate-fadeIn">
-                    <div className="relative text-center p-12 bg-zinc-950/80 rounded-[4rem] border-2 border-yellow-500/10">
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-yellow-500 rounded-full flex items-center justify-center text-black shadow-2xl">
-                            <lucide.Crown size={32} />
-                        </div>
-                        <p className="text-[10px] text-yellow-700 tracking-[0.6em] mb-6 font-black uppercase mt-4">ANBSN Legacy Treasury</p>
-                        <h2 className="text-4xl font-black text-yellow-500 cinzel gold-glow">★ {wealth.anbsn.toLocaleString(undefined, {maximumFractionDigits:0})}</h2>
-                        <p className="mt-6 text-[8px] text-zinc-500 font-bold uppercase leading-relaxed tracking-widest">
-                            Most Valuable Coin on Earth. Reserved for the Kingdom's Eternal Growth.
-                        </p>
-                    </div>
-                    <button className="w-full py-8 bg-yellow-500 text-black font-black rounded-[3rem] cinzel tracking-[0.4em] text-xs shadow-[0_20px_40px_rgba(0,0,0,0.4)]">ACTIVATE ANBSN RECALL</button>
-                </div>
-            );
-        }
-
-        function MarketItem({ name, price, icon }) {
-            return (
-                <div className="flex items-center justify-between p-5 bg-zinc-900/50 rounded-3xl border border-white/5">
-                    <div className="flex items-center gap-3">
-                        <div className="text-blue-400">{icon}</div>
-                        <span className="text-xs font-bold text-zinc-300 uppercase tracking-widest">{name}</span>
-                    </div>
-                    <span className="text-xs font-black text-blue-400 font-mono italic">{price}</span>
-                </div>
-            );
-        }
-
-        function NavIcon({ icon, active, onClick }) {
-            return (
-                <button onClick={onClick} className={`transition-all duration-500 ${active ? 'text-yellow-500 scale-125' : 'text-zinc-700'}`}>
-                    {icon}
-                </button>
             );
         }
 
@@ -200,4 +162,4 @@
 </body>
 </html>
 
-        
+    

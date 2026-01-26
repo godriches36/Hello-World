@@ -5,43 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AGBON KINGDOM | BLACK SUN GOD OS</title>
     
-    <!-- ETERNAL ASSETS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
 
-    <!-- REACT 19 -->
     <script src="https://unpkg.com/react@19/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@19/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-    <!-- FIREBASE CONNECTION -->
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-      import { getFirestore } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyAQAivTEQTdY3xLIzf-a...", // PASTE FULL KEY HERE
-        authDomain: "agbon-kingdom-os.firebaseapp.com",
-        projectId: "agbon-kingdom-os",
-        storageBucket: "agbon-kingdom-os.firebasestorage.app",
-        messagingSenderId: "392983745546",
-        appId: "1:392983745546:web:d500691a52c1929187fbf3"
-      };
-
-      const app = initializeApp(firebaseConfig);
-      window.agbonDB = getFirestore(app);
-    </script>
 
     <style>
         :root { --agbon-gold: #FFD700; --deep-void: #000000; }
         body { background: var(--deep-void); color: #fff; font-family: 'Space Grotesk', sans-serif; margin: 0; overflow: hidden; }
         .cinzel { font-family: 'Cinzel', serif; }
-        .gold-glow { text-shadow: 0 0 30px rgba(255, 215, 0, 0.6); }
-        .btn-divine { background: linear-gradient(135deg, #FFD700 0%, #B8860B 100%); color: #000; font-weight: 900; transition: 0.3s; }
-        .btn-divine:hover { transform: scale(1.02); box-shadow: 0 0 40px rgba(255, 215, 0, 0.4); }
-        ::-webkit-scrollbar { display: none; }
+        .gold-glow { text-shadow: 0 0 25px rgba(255, 215, 0, 0.6); }
+        .glass { background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(15px); border: 1px solid rgba(255, 215, 0, 0.15); }
+        .btn-divine { background: linear-gradient(135deg, #FFD700 0%, #B8860B 100%); color: #000; font-weight: 900; }
+        .scroll-hide::-webkit-scrollbar { display: none; }
+        .pulse-gold { animation: pulse-gold 3s infinite; }
+        @keyframes pulse-gold { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.98); opacity: 0.8; } }
     </style>
 </head>
 <body>
@@ -51,107 +33,139 @@
         const { useState, useEffect } = React;
 
         function App() {
-            const [tab, setTab] = useState('portal');
+            const [tab, setTab] = useState('command');
             const [account, setAccount] = useState(null);
-            const [status, setStatus] = useState("Awaiting Divine Sync...");
+            const [status, setStatus] = useState("L2 Bridge Stable: Agbon Frequency");
+            
+            // MASTER CONFIG
+            const CEO_ADDRESS = "0x8d08948eca2587f5c10159e483b660e98cd5a514"; // REPLACE WITH YOUR METAMASK
 
-            const connectWallet = async () => {
+            const connectSovereign = async () => {
                 if (window.ethereum) {
-                    try {
-                        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                        setAccount(accounts[0]);
-                        setStatus("Sovereign Wallet Connected.");
-                    } catch (err) {
-                        setStatus("Sync Failed. Try Again.");
-                    }
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    setAccount(accounts[0]);
+                    setStatus("Legacy Node Synchronized.");
                 } else {
-                    setStatus("MetaMask Required for Rewards.");
+                    setStatus("MetaMask Bridge Required.");
                 }
             };
 
-            const triggerRecall = async () => {
-                if (!account) {
-                    setStatus("Connect Wallet First.");
-                    return;
-                }
-                setStatus("Initiating ANBSN Reward Recall...");
-                // This is where the transaction frequency is set
+            const triggerBiometricRecall = async () => {
+                if (!account) return setStatus("Connect Wallet First.");
+                
+                // L2 SCALING & BIOMETRIC LOGIC
+                setStatus("Initiating Biometric Handshake...");
+                
                 try {
-                    // Placeholder for future transaction logic
-                    setTimeout(() => setStatus("Recall Signal Broadcasted to ETH Network."), 2000);
+                    // Simulating the WebAuthn Biometric call
+                    if (window.PublicKeyCredential) {
+                        setStatus("Awaiting Thumbprint/FaceID...");
+                        setTimeout(async () => {
+                            setStatus("Biometric Verified. Recalling Wealth...");
+                            // Ethers logic for L2 transaction would go here
+                        }, 1500);
+                    }
                 } catch (e) {
-                    setStatus("Frequency Disturbance. Retry.");
+                    setStatus("Recall Disturbance.");
                 }
             };
 
             return (
-                <div className="h-screen flex flex-col bg-black">
-                    <header className="pt-12 pb-4 px-8 flex justify-between items-center border-b border-white/5">
+                <div className="h-screen w-full flex flex-col bg-black overflow-hidden select-none">
+                    {/* SYSTEM HEADER */}
+                    <header className="pt-12 pb-4 px-8 border-b border-yellow-500/10 flex justify-between items-center">
                         <div>
-                            <h1 className="cinzel text-lg font-bold text-yellow-500 gold-glow tracking-widest uppercase italic">Black Sun God</h1>
-                            <p className="text-[7px] text-zinc-500 uppercase font-black tracking-[0.3em]">CEO | Agbon Kingdom</p>
+                            <h1 className="cinzel text-xl text-yellow-500 gold-glow uppercase italic tracking-widest leading-none">Black Sun God</h1>
+                            <p className="text-[7px] tracking-[0.4em] text-zinc-500 font-black uppercase mt-1">Global Tech CEO | Atlantic Root</p>
                         </div>
-                        <div className="text-right">
-                            <div className={`text-[8px] font-black uppercase px-2 py-1 rounded border ${account ? 'border-green-500 text-green-500' : 'border-red-500 text-red-500'}`}>
-                                {account ? 'Online' : 'Offline'}
-                            </div>
+                        <div className="flex items-center gap-3">
+                            <div className={`w-2 h-2 rounded-full ${account ? 'bg-green-500' : 'bg-red-600 animate-pulse'} shadow-[0_0_10px_rgba(255,215,0,0.3)]`}></div>
                         </div>
                     </header>
 
-                    <main className="flex-1 overflow-y-auto p-6 space-y-6 pb-32">
-                        {tab === 'portal' && (
-                            <div className="space-y-6 animate-fadeIn">
-                                <div className="p-8 bg-zinc-950 rounded-[3rem] border border-yellow-500/10 text-center">
-                                    <img src="https://i.ibb.co/LzNfXv0/ANBSN-COIN.png" alt="ANBSN" className="w-32 h-32 mx-auto mb-4 drop-shadow-2xl" 
-                                         onError={(e) => e.target.src = "https://via.placeholder.com/150?text=ANBSN"} />
-                                    <h2 className="cinzel text-yellow-500 text-xl mb-2">ANBSN Legacy</h2>
-                                    <p className="text-[10px] text-zinc-500 uppercase tracking-widest">Reserve Naira: 1.0T</p>
-                                </div>
-
-                                <div className="p-6 bg-zinc-900/50 rounded-3xl border border-white/5">
-                                    <p className="text-[10px] text-zinc-400 mb-2 uppercase font-black">System Status</p>
-                                    <p className="text-sm font-bold text-yellow-500/80 italic">{status}</p>
-                                </div>
-
-                                {account ? (
-                                    <div className="space-y-4">
-                                        <div className="p-4 bg-zinc-950 rounded-2xl border border-green-500/20">
-                                            <p className="text-[8px] text-zinc-600 uppercase mb-1">Receiver Address</p>
-                                            <p className="text-[10px] font-mono text-green-500 truncate">{account}</p>
-                                        </div>
-                                        <button onClick={triggerRecall} className="w-full py-6 rounded-[2.5rem] btn-divine cinzel tracking-[0.3em] text-xs">ACTIVATE RECALL</button>
+                    {/* MAIN COMMAND INTERFACE */}
+                    <main className="flex-1 overflow-y-auto scroll-hide p-5 space-y-6 pb-32">
+                        
+                        {tab === 'command' && (
+                            <div className="animate-in fade-in duration-1000 space-y-6">
+                                {/* TREASURY DISPLAY (THE ORACLE) */}
+                                <div className="p-10 rounded-[3.5rem] glass text-center relative overflow-hidden">
+                                    <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent"></div>
+                                    <p className="text-[8px] text-yellow-700 font-black tracking-[0.5em] mb-4 uppercase">ANBSN Global Ledger</p>
+                                    <h2 className="text-4xl cinzel text-yellow-500 gold-glow italic">₦ 1.250.000.000.000</h2>
+                                    <div className="mt-4 flex justify-center gap-6 text-[7px] text-zinc-500 font-black tracking-widest uppercase">
+                                        <span>L2: ACTIVE</span>
+                                        <span>NODE: 369-725</span>
                                     </div>
-                                ) : (
-                                    <button onClick={connectWallet} className="w-full py-6 bg-white text-black font-black rounded-[2.5rem] cinzel tracking-[0.3em] text-xs">CONNECT METAMASK</button>
-                                )}
+                                </div>
+
+                                {/* ACTION HUB */}
+                                <div className="space-y-4">
+                                    {account ? (
+                                        <button onClick={triggerBiometricRecall} className="w-full py-8 rounded-[2.5rem] btn-divine cinzel text-[9px] tracking-[0.4em] pulse-gold shadow-2xl">
+                                            ACTIVATE BIOMETRIC RECALL
+                                        </button>
+                                    ) : (
+                                        <button onClick={connectSovereign} className="w-full py-8 rounded-[2.5rem] bg-white text-black font-black cinzel text-[9px] tracking-[0.4em]">
+                                            SYNC LEGACY NODE
+                                        </button>
+                                    )}
+                                </div>
+
+                                {/* INFRASTRUCTURE STATUS GRID */}
+                                <div className="grid grid-cols-2 gap-3">
+                                    <StatusCard icon={<lucide.Waves size={16}/>} label="Atlantic City" status="Tech Growing" color="text-blue-400" />
+                                    <StatusCard icon={<lucide.Zap size={16}/>} label="L2 Utility" status="Sub-Naira Fee" color="text-yellow-500" />
+                                    <StatusCard icon={<lucide.Fingerprint size={16}/>} label="Recall Sec" status="Biometric" color="text-green-500" />
+                                    <StatusCard icon={<lucide.Server size={16}/>} label="Sovereign Cloud" status="Data Root" color="text-purple-500" />
+                                    <StatusCard icon={<lucide.Plane size={16}/>} label="Hypersonic" status="Airport Live" color="text-zinc-400" />
+                                    <StatusCard icon={<lucide.Globe size={16}/>} label="Atlantic Text" status="Global Hub" color="text-cyan-400" />
+                                </div>
                             </div>
                         )}
 
-                        {tab === 'news' && (
-                            <div className="space-y-4 animate-fadeIn">
-                                <h2 className="cinzel text-yellow-500 text-center mb-6">Global Frequency</h2>
-                                <NewsItem title="Naira Ledger Sync" body="The 1.0T ANBSN anchor is now pulling global liquidity." time="2m ago" />
-                                <NewsItem title="ETH Marketplace" body="Lagos Roadside vendors adopting ETH for daily utility." time="15m ago" />
+                        {tab === 'ops' && (
+                            <div className="space-y-4 animate-in slide-in-from-right duration-500">
+                                <h3 className="cinzel text-yellow-500 text-[10px] text-center tracking-[0.3em] mb-8 uppercase">Atlantic Command Ops</h3>
+                                <OpsTile title="Tech Growing City" body="Atlantic Ocean infrastructure for global tech dominance." stat="98% Build" />
+                                <OpsTile title="Roadside L2" body="Bridging ETH to local marketplace utility via L2 scaling." stat="Live" />
+                                <OpsTile title="Legacy Node Network" body="Decentralized hosting for an unbreakable Agbon OS." stat="Active" />
+                                <OpsTile title="Aerospace Mesh" status="Black Sun Satellites providing 5D connectivity." stat="Syncing" />
                             </div>
                         )}
                     </main>
 
-                    <footer className="h-24 bg-black/90 border-t border-white/5 flex justify-around items-center px-10 pb-4 fixed bottom-0 w-full">
-                        <button onClick={() => setTab('portal')} className={`transition-all ${tab === 'portal' ? 'text-yellow-500 scale-125' : 'text-zinc-700'}`}><lucide.Shield size={24}/></button>
-                        <button onClick={() => setTab('news')} className={`transition-all ${tab === 'news' ? 'text-yellow-500 scale-125' : 'text-zinc-700'}`}><lucide.Radio size={24}/></button>
+                    {/* SOVEREIGN NAVIGATION */}
+                    <footer className="fixed bottom-0 w-full h-28 bg-black/95 border-t border-yellow-500/10 flex justify-around items-center px-12 pb-8 z-[100]">
+                        <button onClick={() => setTab('command')} className={`transition-all ${tab === 'command' ? 'text-yellow-500 scale-125' : 'text-zinc-800'}`}>
+                            <lucide.LayoutDashboard size={26}/>
+                        </button>
+                        <button onClick={() => setTab('ops')} className={`transition-all ${tab === 'ops' ? 'text-yellow-500 scale-125' : 'text-zinc-800'}`}>
+                            <lucide.Shield size={26}/>
+                        </button>
                     </footer>
                 </div>
             );
         }
 
-        function NewsItem({ title, body, time }) {
+        function StatusCard({ icon, label, status, color }) {
             return (
-                <div className="p-6 bg-zinc-950 rounded-3xl border border-white/5">
+                <div className="p-5 glass rounded-[2rem] border-b-2 border-transparent hover:border-yellow-500/30 transition-all">
+                    <div className={`${color} mb-3`}>{icon}</div>
+                    <div className="text-[8px] font-black uppercase text-zinc-500 tracking-tighter mb-1">{label}</div>
+                    <div className={`text-[7px] font-bold uppercase ${color}`}>{status}</div>
+                </div>
+            );
+        }
+
+        function OpsTile({ title, body, stat }) {
+            return (
+                <div className="p-6 glass rounded-[2.5rem] border-l-2 border-l-yellow-500/50">
                     <div className="flex justify-between items-center mb-2">
-                        <h3 className="text-yellow-500 text-[10px] font-black uppercase tracking-widest">{title}</h3>
-                        <span className="text-[8px] text-zinc-700">{time}</span>
+                        <h4 className="text-[9px] font-black uppercase tracking-widest text-yellow-500">{title}</h4>
+                        <span className="text-[7px] text-green-500 font-mono font-bold uppercase">{stat}</span>
                     </div>
-                    <p className="text-sm text-zinc-300 font-bold leading-snug tracking-tight">{body}</p>
+                    <p className="text-[10px] text-zinc-400 font-bold leading-relaxed">{body}</p>
                 </div>
             );
         }
@@ -162,4 +176,3 @@
 </body>
 </html>
 
-    

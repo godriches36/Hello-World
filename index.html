@@ -5,50 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AGBON KINGDOM | BLACK SUN GOD OS</title>
     
+    <!-- STYLES & ICONS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
-
-    <!-- FIREBASE BROWSER-COMPATIBLE SDKS (No NPM Required) -->
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-      import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyAQAIvTEQTdY3xLIzf-aYrrzA9h4jRXZgw", // PASTE YOUR KEY FROM PICTURE HERE
-        authDomain: "agbon-kingdom-os.firebaseapp.com",
-        projectId: "agbon-kingdom-os",
-        storageBucket: "agbon-kingdom-os.firebasestorage.app",
-        messagingSenderId: "392983745546",
-        appId: "1:392983745546:web:d500691a52c1929187fbf3",
-        measurementId: "G-N5ZJT196HC"
-      };
-
-      // Initialize Firebase for Global Broadcast
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-      const analytics = getAnalytics(app);
-
-      // Make DB available to the OS
-      window.agbonDB = db;
-    </script>
-
-    <!-- REACT 19 -->
-    <script src="https://unpkg.com/react@19/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@19/umd/react-dom.production.min.js"></script>
+    
+    <!-- REACT & BABEL -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
         :root { --agbon-gold: #FFD700; --deep-void: #000000; }
-        body { background: var(--deep-void); color: #fff; font-family: 'Space Grotesk', sans-serif; margin: 0; overflow: hidden; }
+        body { background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; margin: 0; overflow: hidden; }
         .cinzel { font-family: 'Cinzel', serif; }
-        .gold-glow { text-shadow: 0 0 25px rgba(255, 215, 0, 0.6); }
-        .glass { background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(15px); border: 1px solid rgba(255, 215, 0, 0.15); }
+        .gold-glow { text-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+        .glass { background: rgba(20, 20, 20, 0.95); border: 1px solid rgba(255, 215, 0, 0.2); backdrop-filter: blur(10px); }
         .btn-divine { background: linear-gradient(135deg, #FFD700 0%, #B8860B 100%); color: #000; font-weight: 900; }
-        .pulse-gold { animation: pulse-gold 3s infinite; }
-        @keyframes pulse-gold { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.98); opacity: 0.8; } }
         ::-webkit-scrollbar { display: none; }
     </style>
 </head>
@@ -58,127 +31,74 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
+        // EMERGENCY FALLBACK CONFIG
+        const config = {
+          wealth: "1.250.000.000.000",
+          ceo: "Black Sun God"
+        };
+
         function App() {
-            const [tab, setTab] = useState('command');
-            const [account, setAccount] = useState(null);
-            const [status, setStatus] = useState("Sovereign Node Sync: Online");
-
-            const connectSovereign = async () => {
-                if (window.ethereum) {
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    setAccount(accounts[0]);
-                    setStatus("Legacy Node Synchronized.");
-                    
-                    // Save the connection event to Firebase
-                    if (window.agbonDB) {
-                      try {
-                        // This logs the CEO's entry into the Database
-                        console.log("Broadcasting connection to Agbon DB...");
-                      } catch (e) { console.error(e); }
-                    }
-                } else {
-                    setStatus("MetaMask Bridge Required.");
-                }
-            };
-
-            const triggerRecall = async () => {
-                if (!account) return setStatus("Connect Wallet First.");
-                setStatus("Awaiting Biometric Recall Signature...");
-                // Security handshake logic
-            };
+            const [view, setView] = useState('main');
+            const [status, setStatus] = useState("369 Matrix: Online");
 
             return (
-                <div className="h-screen w-full flex flex-col bg-black overflow-hidden select-none">
-                    <header className="pt-12 pb-4 px-8 border-b border-yellow-500/10 flex justify-between items-center bg-black/50">
+                <div className="h-screen w-full flex flex-col bg-black text-white">
+                    {/* HEADER */}
+                    <header className="p-8 pt-12 border-b border-yellow-500/20 flex justify-between items-center">
                         <div>
-                            <h1 className="cinzel text-xl text-yellow-500 gold-glow uppercase italic tracking-widest leading-none">Black Sun God</h1>
-                            <p className="text-[7px] tracking-[0.4em] text-zinc-600 font-black uppercase mt-1 italic">Agbon Kingdom OS | CEO Root</p>
+                            <h1 className="cinzel text-lg text-yellow-500 gold-glow tracking-tighter italic">AGBON KINGDOM</h1>
+                            <p className="text-[7px] tracking-[0.4em] text-zinc-500 font-black uppercase">Sovereign OS | CEO Root</p>
                         </div>
-                        <div className={`w-2 h-2 rounded-full ${account ? 'bg-green-500 shadow-[0_0_10px_#22c55e]' : 'bg-red-600 animate-pulse shadow-[0_0_10px_red]'}`}></div>
+                        <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]"></div>
                     </header>
 
-                    <main className="flex-1 overflow-y-auto p-6 space-y-6 pb-32">
-                        {tab === 'command' && (
-                            <div className="animate-in fade-in duration-1000 space-y-6">
-                                {/* TREASURY DISPLAY */}
-                                <div className="p-10 rounded-[3.5rem] glass text-center relative">
-                                    <p className="text-[8px] text-yellow-700 font-black tracking-[0.5em] mb-4 uppercase">ANBSN Global Ledger</p>
-                                    <h2 className="text-4xl cinzel text-yellow-500 gold-glow italic tracking-tighter">₦ 1.250.000.000.000</h2>
-                                    <div className="mt-4 flex justify-center gap-4 text-[7px] text-zinc-500 font-black tracking-[0.2em] uppercase">
-                                        <span>ATLANTIC HUB: LIVE</span>
-                                        <span>NODE: 369</span>
-                                    </div>
-                                </div>
+                    {/* CONTENT */}
+                    <main className="flex-1 p-6 overflow-y-auto space-y-6">
+                        <div className="p-10 rounded-[3rem] glass text-center relative overflow-hidden">
+                            <div className="absolute top-0 left-0 w-full h-1 bg-yellow-500/30"></div>
+                            <p className="text-[8px] text-yellow-700 font-black tracking-[0.5em] mb-4 uppercase italic">ANBSN Global Ledger</p>
+                            <h2 className="text-3xl cinzel text-yellow-500 gold-glow italic">₦ {config.wealth}</h2>
+                            <p className="text-[6px] text-zinc-600 mt-4 tracking-[0.3em] uppercase">Atlantic Subsea Data Hub: Synchronized</p>
+                        </div>
 
-                                <div className="space-y-4">
-                                    {account ? (
-                                        <button onClick={triggerRecall} className="w-full py-8 rounded-[2.5rem] btn-divine cinzel text-[9px] tracking-[0.4em] pulse-gold shadow-2xl">
-                                            ACTIVATE BIOMETRIC RECALL
-                                        </button>
-                                    ) : (
-                                        <button onClick={connectSovereign} className="w-full py-8 rounded-[2.5rem] bg-white text-black font-black cinzel text-[9px] tracking-[0.4em]">
-                                            SYNC LEGACY NODE
-                                        </button>
-                                    )}
-                                </div>
+                        <div className="grid grid-cols-1 gap-4">
+                            <button className="w-full py-7 rounded-[2.5rem] btn-divine cinzel text-[10px] tracking-[0.3em] uppercase shadow-2xl">
+                                Initiate Biometric Recall
+                            </button>
+                        </div>
 
-                                {/* INFRASTRUCTURE DASHBOARD */}
-                                <div className="grid grid-cols-2 gap-4">
-                                    <DashCard label="Atlantic City" status="Tech Growing" icon="Waves" color="text-blue-400" />
-                                    <DashCard label="Sovereign Cloud" status="Data Root" icon="Cloud" color="text-purple-400" />
-                                    <DashCard label="L2 Utility" status="Sub-Naira Fee" icon="Zap" color="text-yellow-400" />
-                                    <DashCard label="Global Hub" status="Atlantic Text" icon="Globe" color="text-cyan-400" />
-                                </div>
+                        <div className="grid grid-cols-2 gap-3">
+                            <div className="p-5 glass rounded-3xl">
+                                <p className="text-[7px] text-zinc-500 uppercase font-black mb-1">Infrastructure</p>
+                                <p className="text-[9px] text-yellow-500 font-bold uppercase">Solar Grid: 95%</p>
                             </div>
-                        )}
-
-                        {tab === 'ops' && (
-                            <div className="space-y-4 animate-in slide-in-from-right duration-500">
-                                <h3 className="cinzel text-yellow-500 text-[10px] text-center tracking-[0.3em] mb-6 uppercase">Infrastructure Pillars</h3>
-                                <OpsCard title="Roadside Utility Layer" body="High-speed L2 transactions for Nigerian marketplace." />
-                                <OpsCard title="Atlantic Subsea Hub" body="Largest global texting & data bridge on the ocean floor." />
-                                <OpsCard title="Legacy Node Network" body="Decentralized hosting for 100% OS uptime." />
-                                <OpsCard title="Black Sun Airport" body="Hypersonic aerospace gateway for global hosting." />
+                            <div className="p-5 glass rounded-3xl">
+                                <p className="text-[7px] text-zinc-500 uppercase font-black mb-1">Connectivity</p>
+                                <p className="text-[9px] text-blue-400 font-bold uppercase">Atlantic Hub</p>
                             </div>
-                        )}
+                            <div className="p-5 glass rounded-3xl col-span-2 text-center">
+                                <p className="text-[7px] text-zinc-500 uppercase font-black mb-1">Global Tech Hub</p>
+                                <p className="text-[9px] text-cyan-400 font-bold uppercase italic">Atlantic Technology Growing City</p>
+                            </div>
+                        </div>
                     </main>
 
-                    <footer className="fixed bottom-0 w-full h-24 bg-black/95 border-t border-yellow-500/10 flex justify-around items-center px-12 pb-6 z-[100]">
-                        <button onClick={() => setTab('command')} className={`transition-all ${tab === 'command' ? 'text-yellow-500 scale-125' : 'text-zinc-800'}`}>
-                            <lucide.LayoutDashboard size={24}/>
-                        </button>
-                        <button onClick={() => setTab('ops')} className={`transition-all ${tab === 'ops' ? 'text-yellow-500 scale-125' : 'text-zinc-800'}`}>
-                            <lucide.Shield size={24}/>
-                        </button>
+                    {/* FOOTER */}
+                    <footer className="p-8 pb-10 border-t border-yellow-500/10 flex justify-center gap-12 text-zinc-800">
+                        <i data-lucide="layout-dashboard" className="text-yellow-500"></i>
+                        <i data-lucide="shield"></i>
+                        <i data-lucide="waves"></i>
                     </footer>
                 </div>
             );
         }
 
-        function DashCard({ label, status, icon, color }) {
-            const Icon = lucide[icon] || lucide.Box;
-            return (
-                <div className="p-5 glass rounded-[2rem]">
-                    <Icon className={`${color} mb-3`} size={18} />
-                    <div className="text-[8px] font-black uppercase text-zinc-500 tracking-tighter mb-1">{label}</div>
-                    <div className={`text-[7px] font-bold uppercase ${color}`}>{status}</div>
-                </div>
-            );
-        }
-
-        function OpsCard({ title, body }) {
-            return (
-                <div className="p-6 glass rounded-[2.5rem] border-l-2 border-l-yellow-500/40">
-                    <h4 className="text-[9px] font-black uppercase tracking-[0.2em] text-yellow-500 mb-2">{title}</h4>
-                    <p className="text-[10px] text-zinc-400 font-bold leading-relaxed">{body}</p>
-                </div>
-            );
-        }
-
+        // Initialize Lucide Icons after render
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
+        setTimeout(() => lucide.createIcons(), 500);
     </script>
 </body>
 </html>
 
-        
+    

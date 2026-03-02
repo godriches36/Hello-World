@@ -20,19 +20,20 @@ jobs:
           path: 'core'
           token: ${{ secrets.GH_TOKEN }}
 
-      - name: "Eye Frequency Calibration (7/9)"
+      - name: "Bypass & Frequency Calibration"
+        # Even if the sub-repo has issues, the Brain continues.
+        continue-on-error: true 
         run: |
           cd core
           echo "EYE_PROTOCOL=7_9" >> $GITHUB_ENV
-          echo "ONE_MAN_HEARTBEAT=69" >> $GITHUB_ENV
-          echo "VALUATION=1.25T_NGN" >> $GITHUB_ENV
+          echo "BYPASS_MODE=ACTIVE" >> $GITHUB_ENV
           pip install -r requirements.txt
 
-      - name: "Deploy to 5D Empire Cloud"
+      - name: "Direct Executive Deployment"
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
           cd core
           npm install -g firebase-tools
-          # Deploying via the God_Riches_Global Brain
+          # The 1% Forces the 99% into Alignment
           firebase deploy --only hosting --non-interactive --token $FIREBASE_TOKEN

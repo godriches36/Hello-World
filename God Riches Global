@@ -1,0 +1,38 @@
+name: "God Riches Global: The All-Seeing Runner"
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  ignition:
+    name: "God Riches Global - 1% Sovereign Control"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout 5D Source"
+        uses: actions/checkout@v4
+
+      - name: "Synchronize The 1 in Many (Black Sun God)"
+        uses: actions/checkout@v4
+        with:
+          repository: 'godriches36/BlackSunGod.369'
+          path: 'core'
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: "Eye Frequency Calibration (7/9)"
+        run: |
+          cd core
+          echo "EYE_PROTOCOL=7_9" >> $GITHUB_ENV
+          echo "ONE_MAN_HEARTBEAT=69" >> $GITHUB_ENV
+          echo "VALUATION=1.25T_NGN" >> $GITHUB_ENV
+          pip install -r requirements.txt
+
+      - name: "Deploy to 5D Empire Cloud"
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          cd core
+          npm install -g firebase-tools
+          # Deploying via the God Riches Global Brain
+          firebase deploy --only hosting --non-interactive --token $FIREBASE_TOKEN

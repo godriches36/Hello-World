@@ -1,0 +1,38 @@
+name: Deploy Sovereign Mother Ship
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Ensure only one deployment runs at a time to prevent collisions
+concurrency:
+  group: "pages-root"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Root Identity
+        uses: actions/checkout@v4
+
+      - name: Setup Sovereign Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Mother Ship Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to Global Frequency
+        id: deployment
+        uses: actions/deploy-pages@v4

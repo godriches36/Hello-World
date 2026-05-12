@@ -1,0 +1,7 @@
+name = "anbsn-engine"
+main = "worker.js"
+compatibility_date = "2024-05-10"
+
+[vars]
+# Public variables go here, secrets stay in the dashboard
+PROTOCOL = "05Fa"

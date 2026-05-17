@@ -1,6 +1,6 @@
 name = "anbsn-engine"
 main = "worker.js"
-compatibility_date = "2024-05-10"
+compatibility_date = "2024-05-17"
 
 [vars]
 # Public variables go here, secrets stay in the dashboard
